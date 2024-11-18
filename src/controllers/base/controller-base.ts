@@ -1,9 +1,13 @@
 import { Request, Response, NextFunction } from "express";
 import ServiceBase from "../../application/services/base/service-base";
 import ModelBase from "../../domain/model/base/model-base";
+import { ObjectSchema } from "yup";
 
 export default abstract class ControllerBase<TModel extends ModelBase> {
-  constructor(protected readonly service: ServiceBase<TModel>) {}
+  constructor(
+    protected readonly service: ServiceBase<TModel>,
+    protected readonly validation: ObjectSchema<Partial<TModel>>
+  ) {}
 
   async getAll(request: Request, response: Response, next: NextFunction) {
     try {
@@ -27,6 +31,8 @@ export default abstract class ControllerBase<TModel extends ModelBase> {
   async create(request: Request, response: Response, next: NextFunction) {
     const model = request.body as TModel;
     try {
+      await this.validation.validate(model, { abortEarly: false });
+
       const data = await this.service.create(model);
       return response.status(201).json(data);
     } catch (error) {

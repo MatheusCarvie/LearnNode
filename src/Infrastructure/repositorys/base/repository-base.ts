@@ -27,6 +27,13 @@ export default abstract class RepositoryBase<TModel extends ModelBase> {
   async update(id: string, model: Partial<TModel>): Promise<TModel> {
     if (!Types.ObjectId.isValid(id)) throw new HttpError(ErrorMessages.Validations.INVALID_ID, 400);
 
+    // Obtem as chaves válidas da model
+    const validKeys = Object.keys(this.entity.schema.paths);
+
+    // Filtrar apenas as chaves válidas na model
+    const hasValidParms = Object.keys(model).some((key) => validKeys.includes(key));
+    if (!hasValidParms) throw new HttpError(ErrorMessages.Validations.INVALID_PARAMETERS, 400);
+
     // Atualiza o parametro updatedAt para receber a data atual
     const updatedModel: Partial<TModel> = { ...model, updatedAt: new Date() };
 
