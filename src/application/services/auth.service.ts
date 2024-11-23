@@ -18,7 +18,7 @@ class AuthService {
     const token = jwt.sign({ _id: user._id, email: user.email, name: user.name }, String(process.env.TOKEN_KEY), {
       expiresIn: "720h",
     });
-    return token;
+    return { token: token };
   }
 
   async signUp(model: UserModel) {

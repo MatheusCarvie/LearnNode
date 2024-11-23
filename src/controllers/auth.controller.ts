@@ -12,7 +12,6 @@ class AuthController {
   async signIn(request: Request, response: Response, next: NextFunction) {
     const model = request.body as AuthModel;
     try {
-      console.log("Model: ", model);
       await AuthValidation.validate(model, { abortEarly: false });
       const token = await this.authService.signIn(model.email, model.password);
       return response.json(token);
