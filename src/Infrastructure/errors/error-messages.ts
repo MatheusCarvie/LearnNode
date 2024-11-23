@@ -12,6 +12,8 @@ const ErrorMessages = {
   },
   Auth: {
     SHORT_PASSWORD: "Password must be at least 8 characters long",
+    INVALID_EMAIL_OR_PASSWORD: "Invalid email or password",
+    INVALID_OR_EXPIRED_TOKEN: "Invalid or expired token",
   },
 };
 

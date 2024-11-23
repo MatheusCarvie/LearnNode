@@ -32,7 +32,6 @@ export default abstract class ControllerBase<TModel extends ModelBase> {
     const model = request.body as TModel;
     try {
       await this.validation.validate(model, { abortEarly: false });
-
       const data = await this.service.create(model);
       return response.status(201).json(data);
     } catch (error) {

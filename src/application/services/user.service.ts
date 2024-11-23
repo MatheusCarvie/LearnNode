@@ -11,7 +11,7 @@ export default class UserService extends ServiceBase<UserModel> {
   }
 
   override async create(model: UserModel): Promise<UserModel> {
-    const userExist = await this.repository.getByProps({ email: model.email });
+    const userExist = await this.getByEmail(model.email);
     if (userExist) throw new HttpError(ErrorMessages.Validations.EMAIL_IS_ALREADY_IN_USE, 400);
 
     const newPassword = await this.hashedPassword(model.password.toString());
@@ -19,7 +19,11 @@ export default class UserService extends ServiceBase<UserModel> {
     return super.create(updateModel);
   }
 
-  async hashedPassword(password: string): Promise<string> {
+  private async hashedPassword(password: string): Promise<string> {
     return await bcrypt.hash(password, 12);
+  }
+
+  getByEmail(email: string, selectFields?: string) {
+    return this.repository.getByProps({ email: email }, selectFields);
   }
 }

@@ -50,7 +50,8 @@ export default abstract class RepositoryBase<TModel extends ModelBase> {
     return;
   }
 
-  async getByProps(props: Partial<TModel>): Promise<TModel | null> {
+  async getByProps(props: Partial<TModel>, selectFields?: string): Promise<TModel | null> {
+    if (selectFields) return this.entity.findOne(props).select(selectFields);
     return this.entity.findOne(props);
   }
 }

@@ -18,7 +18,7 @@ const main = async () => {
   // Middleware de erros
   app.use(ErrorMiddleware);
 
-  app.listen(process.env.PORT, () => {
+  app.listen(String(process.env.PORT), () => {
     console.log("Server started");
   });
 };
